@@ -1,0 +1,21 @@
+version: 2.0
+
+jobs:
+  test:
+    docker:
+      - image: circleci/openjdk:stretch
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    steps:
+      - checkout
+      - run: mvn test verify
+      - store_artifacts:
+          path: target/
+
+workflows:
+  version: 2
+
+  test-with-store-artifacts:
+    jobs:
+      - test
